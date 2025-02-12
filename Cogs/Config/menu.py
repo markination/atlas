@@ -21,6 +21,9 @@ class ModulesView(discord.ui.Select):
         super().__init__(placeholder="Choose Enabled Modules", max_values=len(options), min_values=1, options=options)
 
     async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.context.author.id:
+            return await interaction.response.send_message(ephemeral=True, content=f"{emojis['no']} **{interaction.user.name},** this is not your view")
+        
         await interaction.response.defer(ephemeral=True)
 
         guild_id = interaction.guild.id
@@ -29,8 +32,8 @@ class ModulesView(discord.ui.Select):
         guild_config = await config_collection.find_one({"_id": guild_id})
         
         if not guild_config or "Config" not in guild_config:
-            await interaction.followup.send("No configuration found for this guild.", ephemeral=True)
-            return
+            return await interaction.followup.send(f"{emojis['no']} **{interaction.user.name},** no guild configuration was found.", ephemeral=True)
+            
         
         updated_config = guild_config["Config"]
         
@@ -60,8 +63,10 @@ class ConfigPanel(discord.ui.Select):
     async def callback(self, interaction: discord.Interaction):
         if interaction.user.id != self.context.author.id:
             return await interaction.response.send_message(ephemeral=True, content=f"{emojis['no']} **{interaction.user.name},** this is not your view")
-        await interaction.response.defer()
         
+        await interaction.response.defer()
+
+
         if self.values[0] == "perms":
             db = self.mongo["Atlas"]["Config"]
             

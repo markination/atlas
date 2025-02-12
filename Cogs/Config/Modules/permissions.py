@@ -2,47 +2,6 @@ import discord
 from Utils.constants import emojis
 import pymongo
 import os
-def get_permission_roles(client, type, guild_id):
-    """
-    Staff: True\n
-    Management: False
-
-    returns List
-    """
-    try:
-        session = pymongo.MongoClient(os.getenv("MONGO"))
-        db = session["Atlas"]["Config"]
-        
-        find = db.find_one({"_id": guild_id})
-        if not find:
-            session.close()
-            return []
-        
-        guild = client.get_guild(guild_id)
-        if not guild:
-            session.close()
-            return []
-
-        all_roles = {role.id: role for role in guild.roles}
-
-        roles = []
-        if type:
-            role_ids = find.get("staff_roles", [])
-        else:
-            role_ids = find.get("management_roles", [])
-        
-        roles = [all_roles.get(id) for id in role_ids if id in all_roles]
-
-        session.close()
-        
-        return roles
-
-    except Exception as e:
-        print(e)
-        if 'session' in locals():
-            session.close()
-        return []
-        
 
 class StaffTeamRole(discord.ui.RoleSelect):
     def __init__(self, mongo, ctx, staff_roles):
