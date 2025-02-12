@@ -10,7 +10,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 dotenv.load_dotenv()
 
 TOKEN = os.getenv(os.getenv("ENV"))
+
 intents = discord.Intents.all()
+
 
 class Bot(commands.AutoShardedBot):
     def __init__(self):
