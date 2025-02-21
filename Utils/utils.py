@@ -21,8 +21,11 @@ async def check_module_status(guild_id, module, mongo):
         if not find:
             return False
         
-        config = find["Config"][module]
-        if not config:
+        try:
+            config = find["Config"][module]
+            if not config:
+                return False
+        except KeyError:
             return False
         
         enabled = config["is_enabled"]
@@ -68,5 +71,17 @@ async def permission_check(ctx: commands.Context, permission: str) -> bool:
 
     return False
 
+async def get_guild_config(guild_id: int, mongo: AsyncIOMotorClient):
+    """
+    Args:
+        guild_id: Integer = The ID of the guild that the module is under
+        mongo: AsyncioMotorClient = The mongo connection
 
+    Returns:
+        Dict
+    """
 
+    db = mongo["Atlas"]["Config"]
+    find = await db.find_one({"_id": guild_id})
+
+    return find
