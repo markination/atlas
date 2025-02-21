@@ -34,7 +34,7 @@ class Bot(commands.AutoShardedBot):
             self.mongo.close()  
         await super().close()
 
-discordbot = Bot()
+DiscordBot = Bot()
 
 if __name__ == '__main__':
-    discordbot.run(TOKEN, reconnect=True)
+    DiscordBot.run(TOKEN, reconnect=True)

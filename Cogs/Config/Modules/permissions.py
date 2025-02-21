@@ -12,7 +12,7 @@ class StaffTeamRole(discord.ui.RoleSelect):
     async def callback(self, interaction: discord.Interaction):
         if self.ctx.author.id != interaction.user.id:
             embed = discord.Embed(description="This is not your panel!", color=discord.Color.dark_embed())
-            embed.set_author(icon_url=interaction.user.display_avatar.url)
+            embed.set_author(icon_url=interaction.user.display_avatar.url, name=interaction.user.name)
             return await interaction.response.send_message(embed=embed, ephemeral=True)
         await interaction.response.defer()
 
@@ -28,7 +28,6 @@ class StaffTeamRole(discord.ui.RoleSelect):
         return await interaction.followup.send(ephemeral=True, content=f"{emojis['yes']} **{interaction.user.name},** I have saved the staff roles")
 
 
-
 class ManagementRole(discord.ui.RoleSelect):
     def __init__(self, mongo, ctx, management_roles):
         self.ctx = ctx
@@ -39,7 +38,7 @@ class ManagementRole(discord.ui.RoleSelect):
     async def callback(self, interaction: discord.Interaction):
         if self.ctx.author.id != interaction.user.id:
             embed = discord.Embed(description="This is not your panel!", color=discord.Color.dark_embed())
-            embed.set_author(icon_url=interaction.user.display_avatar.url)
+            embed.set_author(icon_url=interaction.user.display_avatar.url, name=interaction.user.name)
             return await interaction.response.send_message(embed=embed, ephemeral=True)
         await interaction.response.defer(ephemeral=True)
 
@@ -69,3 +68,6 @@ class PermissionsView(discord.ui.View):
 
         from Cogs.Config.menu import ConfigPanel
         self.add_item(ConfigPanel(message=self.message, context=self.ctx, mongo=mongo))
+
+
+
