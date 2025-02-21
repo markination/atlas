@@ -1,10 +1,14 @@
+import discord
+from discord.ext import commands
+from motor.motor_asyncio import AsyncIOMotorClient
+
 
 async def check_module_status(guild_id, module, mongo):
     """
-    Parameters:
+    Args:
         guild_id: Integer = The ID of the guild that the module is under
-        Module: String = The name of the module in the Config dict that you are looking for
-        Mongo: AsyncioMotorClient = The mongo connection
+        module: String = The name of the module in the Config dict that you are looking for
+        mongo: AsyncioMotorClient = The mongo connection
 
     Returns:
         Boolean
@@ -19,7 +23,7 @@ async def check_module_status(guild_id, module, mongo):
         
         config = find["Config"][module]
         if not config:
-            return False # shouldnt this raise a keyerror exception anyways?? idk might make the check redundant but oh well
+            return False
         
         enabled = config["is_enabled"]
         return enabled
@@ -28,4 +32,17 @@ async def check_module_status(guild_id, module, mongo):
 
     except Exception:
         return False
-    
+
+async def permission_check(ctx: commands.Context, permission: str):
+    """
+    Args:
+        ctx: commands.Context = Context of the command
+        permission: str = "staff" / "manage"
+        database: AsyncIOMotorClient = The mongo connection
+
+    Returns:
+        boolean
+
+    """
+
+    if permission == "staff":
