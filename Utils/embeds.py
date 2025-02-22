@@ -76,3 +76,17 @@ def ChannelNotFound():
     view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Support", url="https://discord.gg/mmVYkZRG8h"))
     view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Docs", url="https://docs.atlasmgmt.xyz"))
     return {"embed": embed, "view": view}
+
+
+def ChannelSendFailure():
+    embed = discord.Embed(
+        title="Failed to Send",
+        description=f"I can't send messages to the channel, please ensure I have the necessary permissions.",
+        color=discord.Color.brand_red(),
+        timestamp=discord.utils.utcnow())
+
+    view = discord.ui.View(timeout=None)
+    view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Support", url="https://discord.gg/mmVYkZRG8h"))
+    view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Docs", url="https://docs.atlasmgmt.xyz"))
+    return {"embed": embed, "view": view}
+
