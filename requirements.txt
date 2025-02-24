@@ -3,3 +3,4 @@ discord.py~=2.5.0
 dotenv~=0.9.9
 python-dotenv~=1.0.1
 cogwatch~=3.3.1
+motor~=2.5.0
