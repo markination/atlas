@@ -21,7 +21,19 @@ jobs:
           key: ${{ secrets.NEST_SSH_KEY }}
           script: |
             git pull origin main
+            
+            # Check if BOT_TOKEN is set
+            if [ -z "${{ secrets.BOT_TOKEN }}" ]; then
+              echo "Error: BOT_TOKEN is not set!"
+              exit 1
+            fi
+
             docker stop atlas_container || true
             docker rm atlas_container || true
             docker build -t atlas .
-            docker run -d --name atlas_container atlas
+
+            docker run -d --name atlas_container \
+              -e prod=${{ secrets.BOT_TOKEN }} \
+              -e ENV=prod \
+              -e MONGO=${{ secrets.DATABASE_AUTH }} \
+              atlas
