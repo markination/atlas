@@ -1,0 +1,27 @@
+name: Deploy to Nest
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: SSH into Hack Club Nest and restart container
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.NEST_HOST }}
+          username: ${{ secrets.NEST_USER }}
+          key: ${{ secrets.NEST_SSH_KEY }}
+          script: |
+            git pull origin main
+            docker stop atlas_container || true
+            docker rm atlas_container || true
+            docker build -t atlas .
+            docker run -d --name atlas_container atlas
