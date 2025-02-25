@@ -41,7 +41,7 @@ class Bot(commands.AutoShardedBot):
         self._connection._dm_channel_cache = {}
         print(f"Commands Synced Globally: {len(self.tree.get_commands())}")
         print(f"Bot is ready, logged in as {self.user.name} ({self.user.id})")
-        await self.change_presence(activity=discord.CustomActivity("Atlas Testr"))
+        await self.change_presence(activity=discord.CustomActivity("Atlas Test 2"))
 
         if not self.tree.get_commands():
             await self.tree.sync()
