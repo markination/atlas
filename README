@@ -12,4 +12,21 @@ The CC BY-NC-SA license requires the following elements:
 * NC: The material can only be used for non-commercial purposes
 * SA: Adaptations must be licensed under the same terms
 
+## Installation
+1. Clone the repository
+2. Install the required packages using `pip install -r requirements.txt`
+3. Modify the values in `.TEMPLATE.env` and rename it to `.env`
+4. Run the bot using `python main.py`
+
+Atlas requires all environment variables to be set, and for the Core API to be online.
+
+### Bypassing Core API
+For the bot to start, it checks the integrity of our Core API. To bypass this, look for where we are mentioning 'core.atlasmgmt.xyz', and rename it to any public API that has a /health endpoint.
+
+### Hosting Information
+We host Atlas using docker, which is why there is a Github Action to deploy, but support will not be provided for this.
+
+## Contributing
+If you would like to contribute to the project, please fork the repository and submit a pull request, detailing the changes you have made.
+
 [![CodeFactor](https://www.codefactor.io/repository/github/markination/atlas/badge)](https://www.codefactor.io/repository/github/markination/atlas)

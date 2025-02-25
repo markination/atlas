@@ -13,7 +13,10 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 sys.dont_write_bytecode = True
 
-dotenv.load_dotenv()
+if not os.getenv("IN_DOCKER"):
+    dotenv.load_dotenv()
+
+
 TOKEN = os.getenv(os.getenv("ENV"))
 MONGO_URI = os.getenv("MONGO")
 
