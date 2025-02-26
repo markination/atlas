@@ -20,7 +20,10 @@ class Moderation(commands.Cog):
     @app_commands.describe(user="The user you want to warn", reason="The reason for the warning", silent="Whether to DM the user or not")
     async def warn(self, ctx: commands.Context, user: discord.Member, reason: str, silent: bool = False):
         if ctx.interaction:
-            await ctx.interaction.response.defer()
+            try:
+                await ctx.interaction.response.defer()
+            except:
+                pass
 
         if not await permission_check(ctx, "staff"):
             data = MissingPermissions()
@@ -71,14 +74,14 @@ class Moderation(commands.Cog):
             while await self.client.mongo["Atlas"]["Warnings"].find_one({"case_id": case_id}):
                 case_id = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(8))
 
-        embed = discord.Embed(title=f"#{case_id}",
+        embed = discord.Embed(title=f"Case #{case_id}",
                               color=discord.Color.dark_embed(),
                               timestamp=timestamp,
                               description=
-                              f"> **User:** {user.mention} ``({user.id})``"
-                              f"> **Moderator:** {ctx.author.mention} ``({ctx.author.id})``"
-                              f"> **Action:** Warning"
-                              f"> **Reason:** {reason}")
+                              f"> **User:** {user.mention} ``({user.id})``\n"
+                              f"> **Moderator:** {ctx.author.mention} ``({ctx.author.id})``\n"
+                              f"> **Action:** Warning\n"
+                              f"> **Reason:** {reason}\n")
         embed.set_footer(text=f"Case ID: {case_id}", icon_url=ctx.author.display_avatar.url)
         try:
             await log_channel.send(embed=embed,
@@ -108,12 +111,12 @@ class Moderation(commands.Cog):
             return await ctx.send(content=f"{emojis['no']} **{ctx.author.name},** I couldn't warn the user.",
                                   ephemeral=True)
 
-        await ctx.send(content=f"{emojis['yes']} **{ctx.author.name},** I have warned {user.name} for {reason}.",
+        await ctx.send(content=f"{emojis['yes']} **{ctx.author.name},** I have warned {user.name} for ``{reason}``.",
                        ephemeral=True)
 
         if not silent:
             try:
-                await user.send(f"{emojis['moderation']} You have been warned in **{ctx.guild.name}** for {reason}.")
+                await user.send(f"{emojis['moderation']} You have been warned in **{ctx.guild.name}** for ``{reason}``.")
             except discord.HTTPException:
                 pass
 

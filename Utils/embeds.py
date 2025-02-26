@@ -21,7 +21,7 @@ def ModuleNotFound():
 def MissingPermissions():
     embed = discord.Embed(
         title="Missing Permissions",
-        description=f"You are missing the required permissions to run this command.",
+        description=f"> You are missing the required permissions to run this command.",
         color=discord.Color.brand_red(),
         timestamp=discord.utils.utcnow())
 
