@@ -63,6 +63,7 @@ def MissingConfigChannel():
     view = discord.ui.View(timeout=None)
     view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Support", url="https://discord.gg/mmVYkZRG8h"))
     view.add_item(item=discord.ui.Button(style=discord.ButtonStyle.url, label="Docs", url="https://docs.atlasmgmt.xyz"))
+
     return {"embed": embed, "view": view}
 
 def ChannelNotFound():
