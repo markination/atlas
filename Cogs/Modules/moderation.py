@@ -7,10 +7,6 @@ from Utils.embeds import MissingPermissions, ModuleDisabled, MissingConfigChanne
 import secrets
 import string
 
-
-
-
-
 class Moderation(commands.Cog):
     def __init__(self, client: commands.Bot):
         super().__init__()  

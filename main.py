@@ -36,6 +36,7 @@ class Bot(commands.AutoShardedBot):
     def __init__(self):
         super().__init__(command_prefix="!!", intents=intents, member_cache_flags=member_cache)
         self.mongo = None
+        self.help_command = None
 
     @watch(path="Cogs", preload=True)
     async def on_ready(self):

@@ -1,10 +1,5 @@
 name: Deploy to Nest
 
-on:
-  push:
-    tags:
-      - 'v*'
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -27,7 +22,7 @@ jobs:
 
             # Run git commands inside the container
             docker exec atlas_container bash -c "
-              cd /app || exit 1  # Ensure we're in the right directory inside the container
+              cd /app || exit 1  # Ensure we're in the right directory inside the containerz1
               git reset --hard  # Reset any changes
               git pull origin main --force  # Pull latest changes
             "
