@@ -21,14 +21,14 @@ class ModlogChannel(discord.ui.ChannelSelect):
         return await interaction.followup.send(ephemeral=True, content=f"{emojis['yes']} **{interaction.user.name},** I have saved the moderation channel.")
     
 class RequireConfirmation(discord.ui.Select):
-    def __init__(self, mongo):
+    def __init__(self, mongo, enabled):
         self.mongo = mongo
         options=[
-            discord.SelectOption(label="Enable Confirmation ", description="Enable required moderation command confirmation.",value="enable"),
-            discord.SelectOption(label="Disable Confirmation", description="Disable required moderation command confirmation.", value="disable")
+            discord.SelectOption(label="Enabled ", description="Enable required moderation command confirmation.",value="enable",default=True if enabled is True else False),
+            discord.SelectOption(label="Disabled", description="Disable required moderation command confirmation.", value="disable", default=True if enabled is False else False)
 
             ]
-        super().__init__(placeholder="Configuration Menu",max_values=1,min_values=1,options=options, row=2)
+        super().__init__(placeholder="Command Confirmation",max_values=1,min_values=1,options=options, row=2)
     async def callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
         if self.values[0] == "enable":
@@ -44,13 +44,13 @@ class RequireConfirmation(discord.ui.Select):
             return await interaction.followup.send(ephemeral=True, content=f"{emojis['yes']} **{interaction.user.name},** I have disabled the confirmation for moderation commands.")
         
 class ModerationView(discord.ui.View):
-    def __init__(self, mongo, modlog_channel):
+    def __init__(self, mongo, modlog_channel, enabled):
         super().__init__(timeout=None)
         self.mongo = mongo
 
 
         self.add_item(item=ModlogChannel(mongo=self.mongo, modlog_channel=modlog_channel))
-        self.add_item(item=RequireConfirmation(mongo=self.mongo))
+        self.add_item(item=RequireConfirmation(mongo=self.mongo, enabled=enabled))
 
         from Cogs.Config.menu import ConfigPanel
         self.add_item(ConfigPanel(mongo=mongo))

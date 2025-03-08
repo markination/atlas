@@ -37,10 +37,8 @@ class Configuration(commands.Cog):
         top_stats = snapshot.statistics(
             "lineno")
 
-        # Get memory leaks
         leaks = objgraph.get_leaking_objects()
 
-        # Type statistics
         _typestats = objgraph.typestats(
             shortnames=False)
 
@@ -60,7 +58,6 @@ class Configuration(commands.Cog):
                 cmp = '!=' if left != right else '=='
                 return f"{name}: {left} {cmp} {right}"
 
-        # Cache sanity checks
         channels = Counter(
             type(
                 c)
@@ -107,7 +104,6 @@ class Configuration(commands.Cog):
                 'discord.emoji.Emoji'),
         ]
 
-        # Embed for readability
         embed = discord.Embed(
             title="Memory Usage & Leaks",
             color=discord.Color.red())
@@ -116,7 +112,6 @@ class Configuration(commands.Cog):
             value=f"{len(leaks)} objects detected",
             inline=False)
 
-        # Show top memory allocations
         top_memory = "\n".join(
             [
                 f"**#{i + 1}**: `{stat.traceback[0].filename}:{stat.traceback[0].lineno}` - `{stat.size / 1024:.1f} KiB`"
@@ -132,7 +127,6 @@ class Configuration(commands.Cog):
             value=top_memory or "No data",
             inline=False)
 
-        # Sanity check results
         embed.add_field(
             name="Cache Sanity",
             value="\n".join(

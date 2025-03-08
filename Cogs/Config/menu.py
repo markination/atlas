@@ -134,11 +134,13 @@ class ConfigPanel(discord.ui.Select):
 
             modules = find["Config"] if find and "Config" in find else {}
             modlog_channel = modules.get("moderation_module", {}).get("log_channel_id")
+            enabled = modules.get("moderation_module", {}).get("confirmation", False)
             channel = interaction.guild.get_channel(modlog_channel)
 
             view = moderation.ModerationView(
                 mongo=self.mongo,
-                modlog_channel=channel
+                modlog_channel=channel,
+                enabled=enabled
             )
 
             embed = discord.Embed(
